@@ -17,16 +17,35 @@ ajustada a la norma vigente. Cada empresa recibe una copia y la adapta a su tama
 |---|---|
 | `packages/core` | Reglas de negocio sin dependencias: catálogo de 60 ítems, aplicabilidad, calificación, indicadores, KPI y listado maestro de documentos. |
 | `supabase/migrations` | Base de datos PostgreSQL con seguridad por empresa (RLS), almacenamiento de archivos y conservación de registros por 20 años. |
-| `apps/web` | Plataforma web (pendiente). |
+| `apps/web` | Plataforma web (Next.js): empresas, autoevaluación con puntaje en vivo, listado maestro de documentos con carga de archivos y descarga en PDF con logo, código, versión y fecha. |
 | `apps/movil` | App de campo (pendiente). |
+| `.claude/skills` | Skills para Claude Code usadas en el proyecto (diseño, buenas prácticas web, ECC, docling, graphify). |
 
 ## Comandos
 
 ```bash
 pnpm install
-pnpm test        # pruebas del núcleo
+pnpm test                      # pruebas del núcleo y de la web
 pnpm typecheck
+pnpm --filter web semilla      # carga la empresa de ejemplo (La Troncal)
+pnpm dev                       # http://localhost:3000
 ```
+
+### Modo local y producción
+
+Sin variables de Supabase, la web guarda los datos en `apps/web/.datos` (o en `SGSST_DATOS_DIR`).
+Ese modo **no tiene usuarios ni permisos** y sirve solo para desarrollo y demostraciones en un equipo.
+En producción la app se niega a arrancar en modo local, salvo que se active a propósito con `SGSST_MODO_LOCAL=1`.
+
+### PDF
+
+Todos los documentos se descargan con encabezado de control (logo, razón social, NIT, título, código,
+versión, fecha y página X de Y) y un pie con la fecha y hora de generación en hora de Colombia.
+
+- **FT-SST-001**: la autoevaluación con la tabla de valores, subtotales, valoración y acciones del art. 28.
+- **Con archivo PDF o imagen cargado**: hoja de control y control de cambios, seguidas del archivo.
+- **Con archivo de Office**: hoja de control; el original se descarga aparte.
+- **Sin archivo**: plantilla en blanco para diligenciar (la asistencia, FT-SST-015, con su tabla de firmas).
 
 ## Pendiente de verificar
 
